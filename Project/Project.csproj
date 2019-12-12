@@ -244,6 +244,11 @@
     <Content Include="App_Data\BookDataBase_log.ldf">
       <DependentUpon>BookDataBase.mdf</DependentUpon>
     </Content>
+    <Content Include="App_Data\DefaultConnection.mdf" />
+    <Content Include="App_Data\DefaultConnection_log.ldf">
+      <DependentUpon>DefaultConnection.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\Project.Concrete.EFDbContext.mdf" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
