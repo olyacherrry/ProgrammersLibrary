@@ -110,9 +110,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminTests.cs" />
+    <Compile Include="BookTest.cs" />
+    <Compile Include="IntegratedTest.cs" />
+    <Compile Include="IntegratedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest1.cs" />
-    <Compile Include="UnitTest2.cs" />
+    <Compile Include="UnitTestCheckDataTransformation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
