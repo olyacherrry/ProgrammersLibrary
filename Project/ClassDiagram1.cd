@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Project.Controllers.AdminController">
+    <Position X="3.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACCAAAACAAAAAAAAIAAAAAEAAEACAEEAAAAAEAA=</HashCode>
+      <FileName>Controllers\AdminController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Models.Concrete.EFBookRepository" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>ABECAAAAAAAAAAAACAAAAAAAgAAAAAAAAEAAIAAAAAA=</HashCode>
+      <FileName>Models\Concrete\EFBookRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.233" Collapsed="true" />
+  </Class>
+  <Class Name="Project.Models.Entities.Book">
+    <Position X="7" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAgAAAAgAAAAIQAAAAAAAAAAAABAAAACAA=</HashCode>
+      <FileName>Models\Entities\Book.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Models.Entities.Order" BaseTypeListCollapsed="true">
+    <Position X="17" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAKAAAAACAgAAAAAAAAAgAAAgAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Entities\Order.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Project.Models.PagingInfo">
+    <Position X="9.75" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAABAAQAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Models\PagingInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Models.LoginUser">
+    <Position X="17" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\UserViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Models.BookListViewModel">
+    <Position X="7" Y="3.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAQAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BookListViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Controllers.OrderController">
+    <Position X="19.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAACAAAAAAAAAAgAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\OrderController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Controllers.NavigationController">
+    <Position X="19.75" Y="3.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\NavigationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Controllers.BookController">
+    <Position X="13.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAADAAAAAAAAAAAQAAAAAAAAAAAAAAAAABI=</HashCode>
+      <FileName>Controllers\BookController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Project.Models.Abstract.IBookOrderRepository">
+    <Position X="9.75" Y="2.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>ABEAAAAAAAAAAAAACAAAAAAAgAAAAAAAAEAAIAAAAAA=</HashCode>
+      <FileName>Models\Abstract\IBookRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Project.Models.Abstract.IOrderRepository">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAIAAAAAA=</HashCode>
+      <FileName>Models\Abstract\IOrderRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,53 @@
+﻿@using Project.Models
+@using Project.HtmlHelpers
+@model BookListViewModel
+
+@{
+    ViewBag.Title = "Список книг";
+}
+<div class="row panel">
+    <div id="categories" class="col-xs-2">
+        <ul class="nav nav-pills nav-stacked">
+            @*@Html.Action("Menu", "Navigation")*@
+        </ul>
+    </div>
+    <div class="col-xs-9">
+        <div id="modDialog" class="modal fade">
+            <div id="dialogContent" class="modal-dialog"></div>
+        </div>
+        <div class="row">
+            @foreach (var p in @Model.Books)
+            {
+                @Html.Partial("_BookView", p)
+
+            }
+        </div>
+        @section scripts
+{
+            <script type="text/javascript">
+
+                $(function () {
+                    $.ajaxSetup({ cache: false });
+                    $(".compItem").click(function (e) {
+
+                        e.preventDefault();
+                        $.get(this.href, function (data) {
+                            $('#dialogContent').html(data);
+                            $('#modDialog').modal('show');
+                        });
+                    });
+                })
+            </script>
+        }
+        <nav aria-label="Page navigation">
+            <div class="btn-group pull-right">
+                <ul class="pagination">
+                    <li>
+                        @Html.PageLinks(Model.PagingInfo, x => Url.Action("List",
+                            new { page = x, category = Model.CurrentCategory }))
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>

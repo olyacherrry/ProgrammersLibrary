@@ -1,0 +1,42 @@
+﻿@model Project.Models.Entities.Book
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal" area-hidden="true">X</button>
+        <h3 class="text-center h3"> @Html.DisplayFor(model => model.Name)</h3>
+    </div>
+    <div class="modal-body">
+        <dl class="dl-horizontal">
+            @if (Model.ImageData != null)
+            {
+                <div class="text-center">
+                    <img class="img-fluid"
+                         src="@Url.Action("GetImage", "Book",
+                new { Model.BookId })" />
+                </div>
+            }
+                <p>
+                    <b>
+                        @Html.DisplayNameFor(model => model.Category) : 
+                    </b>
+                    @Html.DisplayFor(model => model.Category)
+                </p>
+             
+
+            <p>
+                <b>
+                    @Html.DisplayNameFor(model => model.Description)
+                </b>
+            </p>
+
+            <p class="text-justify">
+                @Html.DisplayFor(model => model.Description)
+            </p>
+        </dl>
+    </div>
+</div>
+

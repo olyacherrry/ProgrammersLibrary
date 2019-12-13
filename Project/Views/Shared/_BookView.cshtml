@@ -1,0 +1,32 @@
+﻿@model Project.Models.Entities.Book
+@using Microsoft.AspNet.Identity;
+
+<div class="col-sm-5 col-md-4">
+    <div class="thumbnail">
+
+        <div class="entry">
+            @if (Model.ImageData != null)
+            {
+                <div class="text-center">
+                    <img class="img-fluid"
+                         src="@Url.Action("GetImage", "Book",
+                new { Model.BookId })" />
+                </div>
+            }
+            <div class="caption">
+                <h2 class="title">  @Model.Name </h2>
+                <p class="lead">@Model.Description.Substring(0, 100)...</p>
+                <p>
+
+                    @if (Request.IsAuthenticated)
+                    {
+                        <a href="@Url.Action("Edit", "Order", new { Model.BookId})" class="btn btn-primary" role="button">Заказать</a>
+                    }
+                    @Html.ActionLink("Подробнее", "Details", new { Model.BookId }, new { @class = "compItem" })
+
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
