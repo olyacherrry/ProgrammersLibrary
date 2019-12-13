@@ -184,6 +184,19 @@ namespace Project.Tests
             mock.Verify(m => m.DeleteBook(book.BookId));
         }
 
+        [TestMethod]
+        public void saveOrder_canSaveOrder()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019")  };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+            
+            ActionResult result = controller.Edit(order1);
+            mock.Verify(m => m.SaveOrder(order1));
+            string v = "1";
+            Assert.IsNotNull(v);
+        }
+
         //[TestMethod]
         //public void Index_Contains_All_Books()
         //{

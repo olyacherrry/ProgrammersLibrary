@@ -17,8 +17,10 @@ namespace Project.Controllers
         {
             repository = repo;
         }
-        int BookId;
-        string UserId;
+
+        public int BookId;
+        public string UserId;
+
         public ViewResult Edit(int bookId)
         {
             Book book = repository.Books.FirstOrDefault(g => g.BookId == bookId);
@@ -35,8 +37,10 @@ namespace Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                order.BookId = BookId;
-                order.UserId = User.Identity.GetUserId();
+                if (order.BookId == 0)
+                    order.BookId = BookId;
+                if (order.UserId == null)
+                    order.UserId = User.Identity.GetUserId();
                 repository.SaveOrder(order);
                 return RedirectToAction("List", "Book");
             }
