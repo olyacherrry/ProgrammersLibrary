@@ -8,6 +8,10 @@ using Project.Controllers;
 using Project.Models.Entities;
 using Project.Models.Abstract;
 using System.IO;
+using Project.Models.Concrete;
+using Project.Models;
+using Project.App_Start;
+using System.ComponentModel.DataAnnotations;
 
 namespace Project.Tests
 {
@@ -121,9 +125,27 @@ namespace Project.Tests
             // Действие - попытка сохранения товара
             ActionResult result = controller.Edit(book);
 
-
             // Утверждение - проверка типа результата метода
             Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public void save_canSaveWithZeroBookId()
+        {
+            // Организация - создание имитированного хранилища данных
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+
+            // Организация - создание контроллера
+            AdminController controller = new AdminController(mock.Object);
+
+            // Организация - создание объекта book
+            Book book = new Book { Name = "Test", BookId = 0 };
+
+            // Действие - попытка сохранения товара
+            ActionResult result = controller.Edit(book);
+
+            // Утверждение - проверка типа результата метода
+            Assert.IsNotInstanceOfType(result, typeof(ViewResult));
         }
 
 
@@ -185,17 +207,226 @@ namespace Project.Tests
         }
 
         [TestMethod]
-        public void saveOrder_canSaveOrder()
+        public void saveOrder_canSaveOrderOrderIsBiggerZero()
         {
-            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019")  };
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 0, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019")  };
             Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
             OrderController controller = new OrderController(mock.Object);
             
             ActionResult result = controller.Edit(order1);
             mock.Verify(m => m.SaveOrder(order1));
-            string v = "1";
-            Assert.IsNotNull(v);
+            Assert.IsNotNull(result);
         }
+        [TestMethod]
+        public void saveOrder_canSaveOrderOrderIsBiggerZerodbEntryIsNull()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 0, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019") };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+
+            ActionResult result = controller.Edit(order1);
+            mock.Verify(m => m.SaveOrder(order1));
+            result = controller.Edit(order1);
+            Assert.IsNotNull(result);
+        }
+        [TestMethod]
+        public void saveOrder_canSaveOrderOrderIsZero()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019") };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+
+            ActionResult result = controller.Edit(order1);
+            mock.Verify(m => m.SaveOrder(order1));
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod] 
+        public void deleteOrder_CanDeleteOrder()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019") };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+            AdminController controller1 = new AdminController(mock.Object);
+
+            ActionResult result = controller.Edit(order1);
+            controller1.DeleteOrder(order1.OrderId);
+            mock.Verify(m => m.DeleteOrder(order1.OrderId));
+        }
+        [TestMethod]
+        public void deleteOrder_CanDeleteUnexcitingOrder()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019") };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+            AdminController controller1 = new AdminController(mock.Object);
+
+            ActionResult result = controller.Edit(order1);
+            controller1.DeleteOrder(order1.OrderId);
+            mock.Verify(m => m.DeleteOrder(order1.OrderId));
+            controller1.DeleteOrder(order1.OrderId);
+            mock.Verify(m => m.DeleteOrder(order1.OrderId));
+        }
+
+
+        //[TestMethod] 
+        public void register_canRegister()
+        {
+            var accountController = new AccountController();
+            var registerViewModel = new RegisterViewModel
+            {
+                Login = "olya",
+                FirsName =  "olya",
+                LastName = "berestneva",
+                Group ="10701117",
+                Email = "test@gmail.com",
+                Password = "123456",
+                ConfirmPassword = "123456"
+            };
+           
+            var result = accountController.Register(registerViewModel).Result;
+            Assert.IsNotNull(result);
+        }
+
+        //[TestMethod]
+        public void register_cantRegister_invalidModelState()
+        {
+            var accountController = new AccountController();
+            var registerViewModel = new RegisterViewModel
+            {
+                Login = "olya",
+                FirsName = "olya",
+                LastName = "berestneva",
+                Group = "10701117",
+                Email = "test@spam.com",
+                Password = "123456",
+                ConfirmPassword = "123456"
+            };
+
+            var result = accountController.Register(registerViewModel).Result;
+            Assert.IsNotNull(result);
+        }
+
+        public void register_cantRegister_invalidModelStateresultIsntSucced()
+        {
+            var accountController = new AccountController();
+            var registerViewModel = new RegisterViewModel
+            {
+                Login = "olya",
+                FirsName = "olya",
+                LastName = "berestneva",
+                Group = "10701117",
+                Email = "test@spam.com",
+                Password = "1234561",
+                ConfirmPassword = "123456"
+            };
+
+            var result = accountController.Register(registerViewModel).Result;
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void isValid_returnTrue()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019") };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+            AdminController controller1 = new AdminController(mock.Object);
+            NotAllowedAttribute notAllowedAttribute = new NotAllowedAttribute();
+
+            ActionResult result = controller.Edit(order1);
+            bool boolRes = notAllowedAttribute.IsValid(order1);
+            Assert.IsTrue(boolRes);
+        }
+        [TestMethod]
+        public void isValid_returnFalse()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2029"), DateEnding = DateTime.Parse("02.02.2019") };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+            AdminController controller1 = new AdminController(mock.Object);
+            NotAllowedAttribute notAllowedAttribute = new NotAllowedAttribute();
+
+            bool boolRes = notAllowedAttribute.IsValid(order1);
+            Assert.IsFalse(boolRes);
+        }
+
+        [TestMethod]
+        public void validate_validateOrderDateLess1990()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019") };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+            AdminController controller1 = new AdminController(mock.Object);
+            List<ValidationResult> errors = new List<ValidationResult>();
+            var valid = new ValidationContext(order1);
+            order1.Validate(valid);
+            Assert.IsNotNull(errors);
+        }
+        [TestMethod]
+        public void validate_validateDateEndingLess1990()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.1800"), DateEnding = DateTime.Parse("02.02.2019") };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+            AdminController controller1 = new AdminController(mock.Object);
+            List<ValidationResult> errors = new List<ValidationResult>();
+            var valid = new ValidationContext(order1);
+            order1.Validate(valid);
+            Assert.IsNotNull(errors);
+        }
+        [TestMethod]
+        public void validate_validatePhoneNumberIsNot13Numbers()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "37533634960911", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019") };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+            AdminController controller1 = new AdminController(mock.Object);
+            List<ValidationResult> errors = new List<ValidationResult>();
+            var valid = new ValidationContext(order1);
+            order1.Validate(valid);
+            Assert.IsNotNull(errors);
+        }
+        [TestMethod]
+        public void validate_validateAllisGood()
+        {
+            Order order1 = new Order { UserId = "1", Adress = "ddcd", BookId = 1, OrderId = 2, Phone = "375336349609", DateStarting = DateTime.Parse("01.01.2019"), DateEnding = DateTime.Parse("02.02.2019") };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            OrderController controller = new OrderController(mock.Object);
+            AdminController controller1 = new AdminController(mock.Object);
+            List<ValidationResult> errors = new List<ValidationResult>();
+            var valid = new ValidationContext(order1);
+            order1.Validate(valid);
+            Assert.IsNotNull(errors);
+        }
+
+
+        //public void validateAsunc_EmailContainsSpam()
+        //{
+        //    //Arrange
+        //    var userManager = new Mock<ApplicationUserManager>();
+        //    Mock<CustomUserValidator> customVal = new Mock<CustomUserValidator>();
+        //    var registerViewModel = new RegisterViewModel
+        //    {
+        //        Login = "olya",
+        //        FirsName = "olya",
+        //        LastName = "berestneva",
+        //        Group = "10701117",
+        //        Email = "test@spam.com",
+        //        Password = "1234561",
+        //        ConfirmPassword = "123456"
+        //    };
+
+
+        //    //Act
+        //    var result = await customVal.ValidateAsync(userManager);
+
+        //    //Assert
+        //    List<ErrorEventArgs> errors = result.Succeeded ? new List<ErrorEventArgs>() : result.Errors.ToList();
+        //    Assert.AreEqual(errors.Count, 2);
+        //}
+
+    }
 
         //[TestMethod]
         //public void Index_Contains_All_Books()
@@ -249,4 +480,4 @@ namespace Project.Tests
     }
 
    
-}
+

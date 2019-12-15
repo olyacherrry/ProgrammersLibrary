@@ -69,9 +69,9 @@ namespace Project.Tests
             // Assert
             PagingInfo pageInfo = result.PagingInfo;
             Assert.AreEqual(pageInfo.CurrentPage, 2);
-            //Assert.AreEqual(pageInfo.ItemsPerPage, 3);
-            //Assert.AreEqual(pageInfo.TotalItems, 5);
-            //Assert.AreEqual(pageInfo.TotalPages, 2);
+            Assert.AreEqual(pageInfo.ItemsPerPage, 3);
+            Assert.AreEqual(pageInfo.TotalItems, 5);
+            Assert.AreEqual(pageInfo.TotalPages, 2);
         }
 
         [TestMethod]
@@ -129,7 +129,6 @@ namespace Project.Tests
         [TestMethod]
         public void book_controller_can_filter_books()
         {
-            // Организация (arrange)
             // Организация (arrange)
             Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
             mock.Setup(m => m.Books).Returns(new List<Book>
@@ -224,11 +223,11 @@ namespace Project.Tests
             Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
             mock.Setup(m => m.Books).Returns(new List<Book>
     {
-        new Book { BookId = 1, Name = "Игра1", Category="Cat1"},
-        new Book { BookId = 2, Name = "Игра2", Category="Cat2"},
-        new Book { BookId = 3, Name = "Игра3", Category="Cat1"},
-        new Book { BookId = 4, Name = "Игра4", Category="Cat2"},
-        new Book { BookId = 5, Name = "Игра5", Category="Cat3"}
+        new Book { BookId = 1, Name = "Book1", Category="Cat1"},
+        new Book { BookId = 2, Name = "Book2", Category="Cat2"},
+        new Book { BookId = 3, Name = "Book3", Category="Cat1"},
+        new Book { BookId = 4, Name = "Book4", Category="Cat2"},
+        new Book { BookId = 5, Name = "Book5", Category="Cat3"}
     });
             BookController controller = new BookController(mock.Object);
             controller.pageSize = 3;
@@ -250,12 +249,12 @@ namespace Project.Tests
             /// Организация (arrange)
             Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
             mock.Setup(m => m.Books).Returns(new List<Book>
-    {
-        new Book { BookId = 1, Name = "Игра1", Category="Cat1"},
-        new Book { BookId = 2, Name = "Игра2", Category="Cat2"},
-        new Book { BookId = 3, Name = "Игра3", Category="Cat1"},
-        new Book { BookId = 4, Name = "Игра4", Category="Cat2"},
-        new Book { BookId = 5, Name = "Игра5", Category="Cat3"}
+  {
+        new Book { BookId = 1, Name = "Book1", Category="Cat1"},
+        new Book { BookId = 2, Name = "Book2", Category="Cat2"},
+        new Book { BookId = 3, Name = "Book3", Category="Cat1"},
+        new Book { BookId = 4, Name = "Book4", Category="Cat2"},
+        new Book { BookId = 5, Name = "Book5", Category="Cat3"}
     });
             BookController controller = new BookController(mock.Object);
             controller.pageSize = 3;
@@ -269,5 +268,81 @@ namespace Project.Tests
             Assert.AreEqual(res1, 2);
             
         }
+
+        [TestMethod] 
+        public void getImage_NotNullBook()
+        {
+            byte[] imageData1 = { 0x36, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31 };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            mock.Setup(m => m.Books).Returns(new List<Book>
+  {
+        new Book { BookId = 1, Name = "Book1", Category="Cat1", ImageData = imageData1, ImageMimeType = "test.jpg"},
+        new Book { BookId = 2, Name = "Book2", Category="Cat2"},
+        new Book { BookId = 3, Name = "Book3", Category="Cat1"},
+        new Book { BookId = 4, Name = "Book4", Category="Cat2"},
+        new Book { BookId = 5, Name = "Book5", Category="Cat3"}
+    });
+            BookController controller = new BookController(mock.Object);
+            var image =controller.GetImage(1);
+            Assert.IsNotNull(imageData1);
+        }
+        [TestMethod]
+        public void getImage_NullBook()
+        {
+            byte[] imageData1 = { 0x36, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31 };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            mock.Setup(m => m.Books).Returns(new List<Book>
+  {
+        new Book { BookId = 1, Name = "Book1", Category="Cat1", ImageData = imageData1, ImageMimeType = "test.jpg"},
+        new Book { BookId = 2, Name = "Book2", Category="Cat2"},
+        new Book { BookId = 3, Name = "Book3", Category="Cat1"},
+        new Book { BookId = 4, Name = "Book4", Category="Cat2"},
+        new Book { BookId = 5, Name = "Book5", Category="Cat3"}
+    });
+            BookController controller = new BookController(mock.Object);
+            controller.pageSize = 3;
+            var image = controller.GetImage(8);
+            Assert.IsNull(image);
+        }
+        [TestMethod]
+        public void Details_notNullBook ()
+        {
+            byte[] imageData1 = { 0x36, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31 };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            mock.Setup(m => m.Books).Returns(new List<Book>
+  {
+        new Book { BookId = 1, Name = "Book1", Category="Cat1", ImageData = imageData1, ImageMimeType = "test.jpg"},
+        new Book { BookId = 2, Name = "Book2", Category="Cat2"},
+        new Book { BookId = 3, Name = "Book3", Category="Cat1"},
+        new Book { BookId = 4, Name = "Book4", Category="Cat2"},
+        new Book { BookId = 5, Name = "Book5", Category="Cat3"}
+    });
+            BookController controller = new BookController(mock.Object);
+            controller.pageSize = 3;
+            var details = controller.Details(1);
+            Assert.IsNotNull(details);
+        }
+
+        [TestMethod]
+        public void Details_NullBook()
+        {
+            byte[] imageData1 = { 0x36, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31, 0x31 };
+            Mock<IBookOrderRepository> mock = new Mock<IBookOrderRepository>();
+            mock.Setup(m => m.Books).Returns(new List<Book>
+  {
+        new Book { BookId = 1, Name = "Book1", Category="Cat1", ImageData = imageData1, ImageMimeType = "test.jpg"},
+        new Book { BookId = 2, Name = "Book2", Category="Cat2"},
+        new Book { BookId = 3, Name = "Book3", Category="Cat1"},
+        new Book { BookId = 4, Name = "Book4", Category="Cat2"},
+        new Book { BookId = 5, Name = "Book5", Category="Cat3"}
+    });
+            BookController controller = new BookController(mock.Object);
+            controller.pageSize = 3;
+            var details = controller.Details(6);
+            Assert.IsNotNull(details);
+        }
+        
     }
+
+    
 }
