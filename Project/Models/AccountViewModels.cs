@@ -66,10 +66,11 @@ namespace Project.Models
         [Required]
         [EmailAddress]
         [Display(Name = "Адрес электронной почты")]
+        [StringLength(32, MinimumLength = 4, ErrorMessage = "Недопустимая длина поля")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 6)]
+        [StringLength(16, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 4)]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
@@ -81,7 +82,7 @@ namespace Project.Models
 
         [Required(ErrorMessage = "Поле должно быть установлено")]
         [Display(Name = "Логин")]
-        [StringLength(32, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 2)]
+        [StringLength(16, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 4)]
         public string Login { get; set; }
 
         [Required(ErrorMessage = "Поле должно быть установлено")]
@@ -99,7 +100,7 @@ namespace Project.Models
         public string Faculty { get; set; }
 
         [Required(ErrorMessage = "Поле должно быть установлено")]
-        [Display(Name = "Группу")]
+        [Display(Name = "Группа")]
         public string Group { get; set; }
     }
 
