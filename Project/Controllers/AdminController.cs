@@ -41,6 +41,14 @@ namespace Project.Controllers
                     book.ImageData = new byte[image.ContentLength];
                     image.InputStream.Read(book.ImageData, 0, image.ContentLength);
                 }
+                else
+                {
+                    if (book.ImageData != null)
+                    {
+                        book.ImageData = book.ImageData;
+                        book.ImageMimeType = book.ImageMimeType;
+                    }
+                }
                 repository.SaveBook(book);
                 TempData["message"] = string.Format("Изменения в книге \"{0}\" были сохранены", book.Name);
                 return RedirectToAction("Index");
